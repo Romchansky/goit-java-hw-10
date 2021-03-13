@@ -92,10 +92,10 @@ public class StreamHomeWork {
     // ex.1 method
     private static void getNameByOddId(List<Personage> personage) {
 
-        List<String> oddNames = personage.stream()
+        String oddNames = personage.stream()
                 .filter(id -> id.getId() % 2 != 0)
                 .map(person -> person.getId() + "." + person.getName())
-                .collect(Collectors.toList());
+                .collect(Collectors.joining(", "));
 
         System.out.println(oddNames);
     }
@@ -114,10 +114,10 @@ public class StreamHomeWork {
     // ex.3 method
     private static void getSortedNumberStrings(String[] stringsDigits) {
 
-        List<String> resultSortedNumbers = Arrays.stream(stringsDigits)
+        String resultSortedNumbers = Arrays.stream(stringsDigits)
                 .flatMap(p -> Arrays.stream(p.replaceAll(" ", "").split(",")))
                 .sorted(Comparator.naturalOrder())
-                .collect(Collectors.toList());
+                .collect(Collectors.joining(", "));
 
         System.out.println(resultSortedNumbers);
     }
