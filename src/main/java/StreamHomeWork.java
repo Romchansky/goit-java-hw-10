@@ -59,7 +59,7 @@ public class StreamHomeWork {
         long m = (long) Math.pow(2, 48);
 
         // ex.5
-        Stream<String> first = Arrays.stream(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"});
+        Stream<String> first = Arrays.stream(new String[]{"1", "2", "3", "4", "5"});
         Stream<String> second = Arrays.stream(new String[]{"one", "two", "three", "four", "five", "six", "seven",
                 "eight", "nine", "zero"});
 
@@ -124,7 +124,7 @@ public class StreamHomeWork {
 
 
     /*
-     * проверка работы метода не бесконечный цикл - убрать метод .limit(13)
+     * проверка работы метода на бесконечный цикл - убрать метод .limit(13)
      * */
     // ex.4 method
     private static Stream<Long> generateInfinityStreamNumber(long seed, long a, long c, long m) {
@@ -133,12 +133,16 @@ public class StreamHomeWork {
 
     // ex.5 method
     public static <T> Stream<T> zip(Stream<T> first, Stream<T> second) {
-        List<T> shuffleStreams = Stream.concat(first, second)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
-                    Collections.shuffle(list);
-                    return list;
-                }));
+        Iterator<T> firstIterator = first.iterator();
+        Iterator<T> secondIterator = second.iterator();
+        Stream<T> shuffleStream = Stream.empty();
 
-        return shuffleStreams.stream();
+        while (firstIterator.hasNext() && secondIterator.hasNext()) {
+            shuffleStream = Stream.concat(shuffleStream, Stream.of(firstIterator.next(), secondIterator.next()));
+        }
+        return shuffleStream.collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+            Collections.shuffle(list);
+            return list.stream();
+        }));
     }
 }
